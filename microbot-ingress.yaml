@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microbot-ingress
+  namespace: microbot
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.org/ssl-services: "microbot"
+spec:
+  tls:
+    - hosts:
+        - microbot.minikube.io
+      secretName: tls-certificate
+  rules:
+    - host: microbot.minikube.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: microbot-service
+                port:
+                  number: 80
